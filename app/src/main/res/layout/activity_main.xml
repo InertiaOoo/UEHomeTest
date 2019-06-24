@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#baccd9"
+    tools:context=".MainActivity">
+
+<LinearLayout
+    android:id="@+id/llayout0"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal">
+
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/bt_check"
+        android:background="@drawable/buttonstyle2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+android:layout_gravity="left"
+        android:text="@string/testchoose"
+        android:layout_alignParentTop="true"
+        android:textSize="18sp"
+android:textStyle="bold"
+        android:textColor="@drawable/button_font_style"
+        android:textAllCaps="false"/>
+
+
+    <Button
+android:layout_weight="1"
+        android:id="@+id/bt_go"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/teststart"
+        android:layout_gravity="right"
+        android:background="@drawable/buttonstyle2"
+        android:textColor="@drawable/button_font_style"
+        />
+
+
+</LinearLayout>
+
+
+
+<TextView
+    android:id="@+id/tv_show"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/llayout0"
+    android:layout_alignParentLeft="true"
+    android:text="             "
+    android:maxWidth="300dp"
+    android:textSize="22dp"
+    android:textStyle="bold"
+    android:background="#ffffff"
+    android:textColor="#ac1f18"
+    android:textAllCaps="false"/>
+
+
+    <TextView
+        android:id="@+id/line_tv"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/tv_show"
+        android:layout_below="@+id/llayout0"
+        android:background="#000000"
+        />
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/rv_log"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:layout_below="@+id/llayout0"
+        android:focusable="true"
+        android:layout_toRightOf="@+id/line_tv"
+android:layout_alignParentRight="true"
+
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

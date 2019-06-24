@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_back"
+
+    >
+    <ImageView
+        android:id="@+id/dialog_iv_cancel"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:textSize="18dp"
+        android:src="@drawable/exit"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/button_style_exit"
+        />
+
+<TextView
+    android:layout_marginTop="5dp"
+    android:id="@+id/dialog_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="请选择测试内容"
+    android:textSize="20sp"
+    android:textColor="@color/white"
+    android:layout_centerHorizontal="true"
+    />
+    <LinearLayout
+        android:id="@+id/lv_liner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_iv_cancel"
+        android:layout_above="@+id/dialog_ok">
+    <ListView
+        android:id="@+id/dialog_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </ListView>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/dialog_ok"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:text="确 定"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="@drawable/button_style_go"
+        android:textColor="@drawable/button_font_style"
+        android:alpha="0.9"
+        />
+
+</RelativeLayout>

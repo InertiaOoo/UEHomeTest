@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".MainActivity">
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_show"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_above="@+id/llayout0"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:text=""-->
+        <!--android:maxWidth="500dp"-->
+        <!--android:textSize="24dp"-->
+        <!--android:textStyle="bold"-->
+<!--android:fitsSystemWindows="true"-->
+
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:textAllCaps="false"/>-->
+
+    <!--android:textColor="#b14b28"-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_show"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/llayout0"
+        android:maxWidth="500dp"
+        android:layout_marginTop="5dp"
+
+        ></android.support.v7.widget.RecyclerView>
+
+
+
+    <!--<ListView-->
+        <!--android:id="@+id/lv_show"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_below="@+id/llayout0"-->
+        <!--android:maxWidth="500dp"-->
+        <!--android:layout_marginTop="5dp"-->
+
+        <!--&gt;</ListView>-->
+
+    <TextView
+        android:fitsSystemWindows="true"
+        android:id="@+id/line_tv"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/rv_show"
+        android:layout_above="@+id/llayout0"
+        android:background="#ffffff"
+        />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:fitsSystemWindows="true"
+        android:id="@+id/rv_log"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+android:layout_marginTop="5dp"
+        android:layout_above="@+id/llayout0"
+        android:layout_toRightOf="@+id/line_tv"
+        android:layout_alignParentRight="true"
+
+        ></android.support.v7.widget.RecyclerView>
+
+
+    <ImageView
+        android:id="@+id/exit_iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerInside"
+        android:textSize="18dp"
+        android:src="@drawable/exit"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/button_style_exit"
+
+        />
+
+
+
+
+    <RelativeLayout
+        android:fitsSystemWindows="true"
+        android:id="@+id/llayout0"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        >
+
+
+        <Button
+
+            android:id="@+id/bt_go"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="@string/teststart"
+           android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/bt_check"
+            android:layout_marginRight="9dp"
+android:layout_marginLeft="1dp"
+            android:background="@drawable/button_style_go"
+            android:textColor="@drawable/button_font_style"
+
+            android:alpha="0.9"
+            />
+
+
+        <Button
+
+            android:id="@+id/bt_check"
+            android:background="@drawable/button_style_go"
+            android:layout_alignParentRight="true"
+            android:layout_width="390dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="1dp"
+            android:text="@string/testchoose"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@drawable/button_font_style"
+
+            android:alpha="0.9"
+            android:textAllCaps="false"/>
+
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="#fffef8"
+
+        android:layout_alignRight="@+id/llayout0"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        android:visibility="invisible"
+        android:layout_marginRight="440dp"
+        />
+
+
+</RelativeLayout>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">优测</string>
+    <string name="teststart">开始测试</string>
+    <string name="testchoose">选择测试项目</string>
+    <string name="testcontent">请选择测试项目然后开始测试</string>
+</resources>

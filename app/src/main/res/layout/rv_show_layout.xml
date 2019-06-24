@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/tv_show_onlist1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="21dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="list item"
+        />
+    <TextView
+        android:id="@+id/tv_show_onlist2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="21dp"
+        android:textColor="#ffffff"
+        android:text="list item"/>
+
+</LinearLayout>

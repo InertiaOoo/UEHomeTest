@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <style name="AppTheme.Main" parent="Theme.AppCompat.Light.NoActionBar">
+//取消开启应用的白屏
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowBackground">@color/BACKCOLOR6</item>-->
+        <item name="android:windowBackground">@drawable/startback</item>
+
+//
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+
+    </style>
+
+
+    <style name="AppTheme.Main2" parent="Theme.AppCompat.Light.NoActionBar">
+
+        //取消开启应用的白屏
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/BACKCOLOR6</item>
+
+        //
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+
+    </style>
+
+
+</resources>
