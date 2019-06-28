@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.hardware.input.InputManager;
@@ -48,6 +49,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -122,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
     private ResultReceiver mResultReceiver;
 
     //权限
-    private String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
-            , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
+    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
     private AlertDialog dialog;
 
     //日志
@@ -616,6 +617,16 @@ public class MainActivity extends AppCompatActivity {
             MainActivity activity = mActivity.get();
             if (activity != null) {
                 switch (msg.what) {
+
+
+                    case 000:
+
+                        keyPrint("", "没有WIFI模块");
+
+                        myPrint(order++ + "——", "没有WIFI模块...：" + TAB + getDateEN());
+
+                        break;
+
                     case 001:
                         netNum = whichNet();
 
@@ -627,8 +638,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 002:
-                        keyPrint(TAB, "当前无网络");
+                        myPrint(TAB, "当前无网络");
 //
+
                         NETWORKSTATE = false;
 
                         break;
@@ -853,9 +865,18 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
 //本地音乐
+
+
+                    case 509:
+
+                        myPrint(order++ + "——", "本地音乐播放器未安装" + TAB );
+                        break;
                     case 501:
 
                         try {
+
+                                myPrint(order++ + "——", "本地音乐播放器已安装" + TAB );
+
                             myPrint(order++ + "——", "本地音乐播放器接口测试" + TAB + getDateEN());
                             keyPrint("本地音乐播放器接口测试：", "");
 
@@ -1112,7 +1133,10 @@ public class MainActivity extends AppCompatActivity {
                                 OnlineMusicFlag = false;
                             }
 //                            tl_List.add(new TestLog(TAB, "当前播放总时长" + iOnlineMusicAidl.getDurationTime()));
-
+if(iOnlineMusicAidl.isPlaying()){
+    OnlineMusicFlag = true;
+    myPrint(TAB, "正在播放在线音乐");
+}
 
                             iOnlineMusicAidl.seekTo((int) (iOnlineMusicAidl.getDurationTime() / 2));
                             myPrint(TAB, "播放进度设置为总时长一半");
@@ -1124,8 +1148,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                         myPrint(TAB, "OnlineMusicFlag(602):" + OnlineMusicFlag);
 //
-                        myPrint(TAB, "OnlineMusicFlag(602):" + OnlineMusicFlag);
+
 //
+
+                        rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
+
+                        break;
+
+                    case 604:
                         if (OnlineMusicFlag) {
 
                             keyPrint("测试通过", "");
@@ -1135,6 +1165,7 @@ public class MainActivity extends AppCompatActivity {
 //
                         }
                         rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
+
 
                         break;
 //有声内容
@@ -1226,6 +1257,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.e("album.getAlbumIntro", album.getAlbumIntro() + "/" + album.getAlbumTitle());
 
                                 radioAidl.playAudioContentVoice(album);
+                                RadioContentFlag = true;
 
                             } else {
                                 RadioContentFlag = false;
@@ -1237,8 +1269,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 703:
-
-
                         try {
                             myPrint(TAB + "-after playAudioContentVoice:getCurrentAlbumId:", radioAidl.getCurrentAlbumId());
                             if (radioAidl.getCurrentAlbumId() == null) {
@@ -1246,11 +1276,19 @@ public class MainActivity extends AppCompatActivity {
                             } else {
 //
                                 myPrint(TAB + "-after playAudioContentVoice:getCurrentTrackIndex:", String.valueOf(radioAidl.getCurrentTrackIndex()));
+                                RadioContentFlag = true;
                             }
 //
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
+
+
+                        rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
+                        break;
+
+
+                    case 704:
                         if (RadioContentFlag) {
 
                             keyPrint("测试通过", "");
@@ -1258,10 +1296,12 @@ public class MainActivity extends AppCompatActivity {
 //
                         } else {
                             keyPrint("", "测试未通过");
+
                         }
 
 
                         rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
+
                         break;
 
                     //本地蓝牙
@@ -1540,9 +1580,11 @@ public class MainActivity extends AppCompatActivity {
     Thread tdNet1 = new Thread(new Runnable() {
         @Override
         public void run() {
-
-            handlerGo.sendEmptyMessage(001);
-
+if(wifiManager != null) {
+    handlerGo.sendEmptyMessage(001);
+}else {
+    handlerGo.sendEmptyMessage(000);
+}
             Log.e("tdNet1", "tdNet1");
             try {
                 Thread.sleep(MILLIS);
@@ -1583,7 +1625,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (netNum == 1 || netNum == 10) {
 
-            } else {
+            } else if(wifiManager != null ) {
 
                 if (wifiManager.isWifiEnabled()) {
                     handlerGo.sendEmptyMessage(101);
@@ -1609,7 +1651,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (netNum == 1 || netNum == 10) {
 
-            } else {
+            } else  if(wifiManager != null ){
                 try {
 
                     for (int i = 0; i < 3; i++) {
@@ -1642,7 +1684,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (netNum == 1 || netNum == 10) {
 
-            } else {
+            } else  if(wifiManager != null ){
                 try {
                     Thread.sleep(MILLIS);
 
@@ -1709,6 +1751,7 @@ public class MainActivity extends AppCompatActivity {
                 Thread.sleep(MILLIS);
                 if (blueadapter.isEnabled()) {
                     handlerGo.sendEmptyMessage(402);
+                    BTSYSFLAG = false;
                 } else {
                     handlerGo.sendEmptyMessage(403);
                     blueadapter.enable();
@@ -1781,11 +1824,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
+
+
                 startLocalService();
                 Thread.sleep(MILLIS);
+                if(isInstall("com.dfzt.dfzt_radio")) {
 
-                handlerGo.sendEmptyMessage(501);
-
+                    handlerGo.sendEmptyMessage(501);
+                }   else{
+                    handlerGo.sendEmptyMessage(509);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -1891,10 +1939,15 @@ public class MainActivity extends AppCompatActivity {
             if (NETWORKSTATE == false) {
             } else {
                 try {
+                    for(int i = 0;i < 3;i++) {
+                        Thread.currentThread().sleep(MILLIS * 2);
+                        handlerGo.sendEmptyMessage(603);
 
-                    Thread.currentThread().sleep(MILLIS * 2);
-                    handlerGo.sendEmptyMessage(603);
-
+                        if(OnlineMusicFlag == true){
+                            handlerGo.sendEmptyMessage(604);
+                            break;
+                        }
+                    }
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1975,10 +2028,16 @@ public class MainActivity extends AppCompatActivity {
             if (NETWORKSTATE == false) {
             } else {
                 try {
-                    Thread.sleep(MILLIS);
-                    handlerGo.sendEmptyMessage(703);
-                    Thread.sleep(MILLIS);
 
+                    for(int i = 0;i < 5;i++) {
+                        Thread.sleep(MILLIS);
+                        handlerGo.sendEmptyMessage(703);
+                        Thread.sleep(MILLIS);
+                        if(RadioContentFlag == true){
+                            handlerGo.sendEmptyMessage(704);
+                            break;
+                        }
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -2134,12 +2193,15 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化RecycleView内容和dialoglist内容
     private void initList() {
+        if(tl_List.size()<2) {
+            tl_List.clear();
+            sc_list.clear();
 
         TestLog tlog1 = new TestLog("", getResources().getString(R.string.testcontent));
         tl_List.add(tlog1);
 
         sc_list.add(new ShowContent("", ""));
-
+        }
         int length = mlistText.length;
         for (int i = 0; i < length; i++) {
             Map<String, Object> item = new HashMap<>();
@@ -2208,8 +2270,8 @@ public class MainActivity extends AppCompatActivity {
         String str_2 = "";
         switch (i) {
             case 0:
-                str_1 = "获粗略取位置权限不可用";
-                str_2 = "由于需要获粗略取位置信息；\n否则，您将无法正常使用";
+                str_1 = "获取位置权限不可用";
+                str_2 = "由于需要获取位置信息；\n否则，您将无法正常使用";
                 break;
             case 1:
                 str_1 = "获取精准位置权限不可用";
@@ -2833,6 +2895,21 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    private boolean isInstall(String packageName){
+        PackageManager packageManager = this.getPackageManager();
+
+        boolean hasInstallWx;
+        try{
+            PackageInfo packageInfo =packageManager.getPackageInfo(packageName,PackageManager.GET_GIDS);
+            hasInstallWx = packageInfo !=null;
+        }catch(PackageManager.NameNotFoundException e) {
+            hasInstallWx =false;
+            e.printStackTrace();    }
+            return hasInstallWx;  }
+
+
+
+
     /*
     多选Dialog框listview
      */
@@ -2901,6 +2978,11 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setItemsCanFocus(false);
         myDialog.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         myDialog.setOnItemClickListener(new ItemOnClick());
+        final WindowManager.LayoutParams params = myDialog.getWindow().getAttributes();
+        params.width = 600;
+        params.height = 600;
+        myDialog.getWindow().setAttributes(params);
+        myDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         myDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -3177,9 +3259,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        FileUtils.saveFile(tl_List);
-        FileUtils.saveFile(screenShotWholeScreen(), "testPic.jpeg", MainActivity.this);
-        Log.e("保存截图到", "//sdcard//UTest//testPic.jpeg");
+//        FileUtils.saveFile(tl_List);
+//        FileUtils.saveFile(screenShotWholeScreen(), "testPic.jpeg", MainActivity.this);
+//        Log.e("保存截图到", "//sdcard//UTest//testPic.jpeg");
         Log.e("关闭应用", "");
         try {
 
