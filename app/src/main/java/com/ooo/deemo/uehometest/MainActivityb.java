@@ -57,9 +57,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfzt.bluetooth.IBluetoothService;
@@ -96,11 +94,10 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityb extends AppCompatActivity {
 
     private static Context context;
     //本地
@@ -112,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     private UsbDevice mUsbDevice;
     private static BluetoothAdapter blueadapter;
     private static final String ACTION_USB_PERMISSION = "com.github.mjdev.libaums.USB_PERMISSION";
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivityb.class.getSimpleName();
     private FileSystem currentFs;
 
     private static BlueToothReceiver blueToothReceiver;
@@ -124,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
     private ResultReceiver mResultReceiver;
 
     //权限
-    private String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+    private String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+            , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
     private AlertDialog dialog;
 
     //日志
@@ -152,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     //ForDialog
     View getlistview;
-    String[] mlistText = {"全选", "WIFI模块", "U盘", "SD卡", "蓝牙模块", "本地音乐应用", "在线音乐应用", "有声内容应用", "本地蓝牙应用"};
+    String[] mlistText = {"全选", "WIFI", "USB", "SD", "蓝牙", "本地音乐", "在线音乐", "有声内容", "本地蓝牙"};
     ArrayList<Map<String, Object>> mData = new ArrayList<>();
 
     AlertDialog testdialog;
@@ -271,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
         bt_try.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                Intent intent = new Intent(MainActivityb.this, MainActivity2.class);
                 startActivity(intent);
             }
         });
@@ -281,11 +279,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isHasTest();
                 if (hasTest == false) {
-                    Toast.makeText(MainActivity.this, "当前无测试项目，请选择测试项目", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityb.this, "当前无测试项目，请选择测试项目", Toast.LENGTH_SHORT).show();
 
 
                 } else if (isThread) {
-                    Toast.makeText(MainActivity.this, "当前正在测试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivityb.this, "当前正在测试", Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -367,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
         rAdapter = new RecycleAdapter(tl_List);
         rv_log.setAdapter(rAdapter);
 
-        MainActivity.context = getApplicationContext();
+        MainActivityb.context = getApplicationContext();
 
 
 //         lvShowAdapter = new LVShowAdapter(this,R.layout.lv_show_layout,showContentList);
@@ -595,7 +593,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*
   01xx：WIFI
-  02xx：U盘
+  02xx：USB
   03xx：SD
   04xx：本地蓝牙
   05xx：本地音乐
@@ -606,27 +604,17 @@ public class MainActivity extends AppCompatActivity {
 
     //    private static Handler handlerGo = new Handler() {
     private static class MyHandler extends Handler {
-        private final WeakReference<MainActivity> mActivity;
+        private final WeakReference<MainActivityb> mActivity;
 
-        private MyHandler(MainActivity activity) {
+        private MyHandler(MainActivityb activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            MainActivity activity = mActivity.get();
+            MainActivityb activity = mActivity.get();
             if (activity != null) {
                 switch (msg.what) {
-
-
-                    case 000:
-
-                        keyPrint("", "没有WIFI模块");
-
-                        myPrint(order++ + "——", "没有WIFI模块...：" + TAB + getDateEN());
-
-                        break;
-
                     case 001:
                         netNum = whichNet();
 
@@ -638,9 +626,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 002:
-                        myPrint(TAB, "当前无网络");
+                        keyPrint(TAB, "当前无网络");
 //
-
                         NETWORKSTATE = false;
 
                         break;
@@ -739,8 +726,8 @@ public class MainActivity extends AppCompatActivity {
 
                         if (sdNum() == 2 || usbReceiver.getUSBFLAG() || USBFLAG) {
 
-                            myPrint(TAB, "USB：检测到U盘");
-                            keyPrint("检测到U盘", "");
+                            myPrint(TAB, "USB：检测到USB");
+                            keyPrint("检测到USB", "");
 
 
 //
@@ -748,8 +735,8 @@ public class MainActivity extends AppCompatActivity {
 //
                         } else {
 
-                            myPrint(TAB, "USB：没有检测到U盘");
-                            keyPrint("", "没有检测到U盘");
+                            myPrint(TAB, "USB：没有检测到USB");
+                            keyPrint("", "没有检测到USB");
 
 //
                         }
@@ -868,17 +855,16 @@ public class MainActivity extends AppCompatActivity {
 
 
                     case 509:
-                        myPrint(order++ + "——", "本地音乐播放器接口测试" + TAB + getDateEN());
-                        myPrint( TAB, "本地音乐播放器未安装" );
+
+                        myPrint(order++ + "——", "本地音乐播放器未安装" + TAB );
                         break;
                     case 501:
 
                         try {
 
-
+                                myPrint(order++ + "——", "本地音乐播放器已安装" + TAB );
 
                             myPrint(order++ + "——", "本地音乐播放器接口测试" + TAB + getDateEN());
-                            myPrint( TAB, "本地音乐播放器已安装" );
                             keyPrint("本地音乐播放器接口测试：", "");
 
 //
@@ -988,7 +974,7 @@ public class MainActivity extends AppCompatActivity {
 //
                                 if (iPlayerProvider.getBootPlay()) {
                                     myPrint(TAB, "设置开机自动播放成功");
-                                    iPlayerProvider.setBootPlay(false);
+
 //
 
                                 } else {
@@ -1051,18 +1037,18 @@ public class MainActivity extends AppCompatActivity {
 //
                                 iOnlineMusicAidl.searchOnLineMusic("paradise coldplay");
                             } else if (random < 30) {
-                                myPrint(TAB, "搜索歌曲：董小姐-宋冬野");
+                                myPrint(TAB, "搜索歌曲：世界末日 周杰伦");
 
 //
-                                iOnlineMusicAidl.searchOnLineMusic("董小姐 宋冬野");
+                                iOnlineMusicAidl.searchOnLineMusic("世界末日 周杰伦");
                             } else if (random < 40) {
-                                myPrint(TAB, "搜索歌曲：背叛 曹格");
+                                myPrint(TAB, "搜索歌曲：岁月如歌");
 //
-                                iOnlineMusicAidl.searchOnLineMusic("背叛 曹格");
+                                iOnlineMusicAidl.searchOnLineMusic("岁月如歌");
                             } else if (random < 50) {
-                                myPrint(TAB, "搜索歌曲：裙下之臣-陈奕迅");
+                                myPrint(TAB, "搜索歌曲：Yellow coldplay");
 //
-                                iOnlineMusicAidl.searchOnLineMusic("裙下之臣 陈奕迅");
+                                iOnlineMusicAidl.searchOnLineMusic("yellow coldplay");
                             } else {
                                 myPrint(TAB, "搜索歌曲：夜空中最亮的星");
 //
@@ -1134,10 +1120,7 @@ public class MainActivity extends AppCompatActivity {
                                 OnlineMusicFlag = false;
                             }
 //                            tl_List.add(new TestLog(TAB, "当前播放总时长" + iOnlineMusicAidl.getDurationTime()));
-                            if (iOnlineMusicAidl.isPlaying()) {
-                                OnlineMusicFlag = true;
-                                myPrint(TAB, "正在播放在线音乐");
-                            }
+
 
                             iOnlineMusicAidl.seekTo((int) (iOnlineMusicAidl.getDurationTime() / 2));
                             myPrint(TAB, "播放进度设置为总时长一半");
@@ -1149,14 +1132,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         myPrint(TAB, "OnlineMusicFlag(602):" + OnlineMusicFlag);
 //
-
+                        myPrint(TAB, "OnlineMusicFlag(602):" + OnlineMusicFlag);
 //
-
-                        rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
-
-                        break;
-
-                    case 604:
                         if (OnlineMusicFlag) {
 
                             keyPrint("测试通过", "");
@@ -1166,7 +1143,6 @@ public class MainActivity extends AppCompatActivity {
 //
                         }
                         rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
-
 
                         break;
 //有声内容
@@ -1258,7 +1234,6 @@ public class MainActivity extends AppCompatActivity {
                                 Log.e("album.getAlbumIntro", album.getAlbumIntro() + "/" + album.getAlbumTitle());
 
                                 radioAidl.playAudioContentVoice(album);
-                                RadioContentFlag = true;
 
                             } else {
                                 RadioContentFlag = false;
@@ -1270,6 +1245,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 703:
+
+
                         try {
                             myPrint(TAB + "-after playAudioContentVoice:getCurrentAlbumId:", radioAidl.getCurrentAlbumId());
                             if (radioAidl.getCurrentAlbumId() == null) {
@@ -1277,19 +1254,11 @@ public class MainActivity extends AppCompatActivity {
                             } else {
 //
                                 myPrint(TAB + "-after playAudioContentVoice:getCurrentTrackIndex:", String.valueOf(radioAidl.getCurrentTrackIndex()));
-                                RadioContentFlag = true;
                             }
 //
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
-
-
-                        rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
-                        break;
-
-
-                    case 704:
                         if (RadioContentFlag) {
 
                             keyPrint("测试通过", "");
@@ -1297,12 +1266,10 @@ public class MainActivity extends AppCompatActivity {
 //
                         } else {
                             keyPrint("", "测试未通过");
-
                         }
 
 
                         rv_log.scrollToPosition(rAdapter.getItemCount() - 1);
-
                         break;
 
                     //本地蓝牙
@@ -1367,7 +1334,7 @@ public class MainActivity extends AppCompatActivity {
                         keyPrint("", "本次检测结束！");
 //
 
-                        Toast.makeText(MainActivity.context, "本次检测结束！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivityb.context, "本次检测结束！", Toast.LENGTH_SHORT).show();
 
 //                    getWindow().getDecorView().invalidate();
 //
@@ -1581,11 +1548,9 @@ public class MainActivity extends AppCompatActivity {
     Thread tdNet1 = new Thread(new Runnable() {
         @Override
         public void run() {
-            if (wifiManager != null) {
-                handlerGo.sendEmptyMessage(001);
-            } else {
-                handlerGo.sendEmptyMessage(000);
-            }
+
+            handlerGo.sendEmptyMessage(001);
+
             Log.e("tdNet1", "tdNet1");
             try {
                 Thread.sleep(MILLIS);
@@ -1626,7 +1591,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (netNum == 1 || netNum == 10) {
 
-            } else if (wifiManager != null) {
+            } else {
 
                 if (wifiManager.isWifiEnabled()) {
                     handlerGo.sendEmptyMessage(101);
@@ -1652,7 +1617,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (netNum == 1 || netNum == 10) {
 
-            } else if (wifiManager != null) {
+            } else {
                 try {
 
                     for (int i = 0; i < 3; i++) {
@@ -1685,7 +1650,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (netNum == 1 || netNum == 10) {
 
-            } else if (wifiManager != null) {
+            } else {
                 try {
                     Thread.sleep(MILLIS);
 
@@ -1752,7 +1717,6 @@ public class MainActivity extends AppCompatActivity {
                 Thread.sleep(MILLIS);
                 if (blueadapter.isEnabled()) {
                     handlerGo.sendEmptyMessage(402);
-                    BTSYSFLAG = false;
                 } else {
                     handlerGo.sendEmptyMessage(403);
                     blueadapter.enable();
@@ -1770,30 +1734,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                if(BTSYSFLAG==true) {
-                    Thread.sleep(MILLIS);
-                    int i = 0;
-                    while (true) {
-                        if (blueadapter.isEnabled() == false && i < 5) {
+                Thread.sleep(MILLIS);
+                if (blueadapter.isEnabled() && BTSYSFLAG) {
+                    handlerGo.sendEmptyMessage(404);
+                } else if (blueadapter.isEnabled() == false) {
+                    handlerGo.sendEmptyMessage(405);
 
-
-                        } else if (blueadapter.isEnabled() == false && i >= 5) {
-
-                            handlerGo.sendEmptyMessage(405);
-
-                            break;
-                        } else {
-                            handlerGo.sendEmptyMessage(404);
-                            break;
-                        }
-                        i++;
-                        Thread.sleep(MILLIS);
-                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
     });
 
@@ -1843,10 +1793,10 @@ public class MainActivity extends AppCompatActivity {
 
                 startLocalService();
                 Thread.sleep(MILLIS);
-                if (isInstall("com.dfzt.dfzt_radio")) {
+                if(isInstall("com.dfzt.dfzt_radio")) {
 
                     handlerGo.sendEmptyMessage(501);
-                } else {
+                }   else{
                     handlerGo.sendEmptyMessage(509);
                 }
             } catch (InterruptedException e) {
@@ -1954,15 +1904,10 @@ public class MainActivity extends AppCompatActivity {
             if (NETWORKSTATE == false) {
             } else {
                 try {
-                    for (int i = 0; i < 5; i++) {
-                        Thread.currentThread().sleep(MILLIS * 2);
-                        handlerGo.sendEmptyMessage(603);
 
-                        if (OnlineMusicFlag == true) {
-                            handlerGo.sendEmptyMessage(604);
-                            break;
-                        }
-                    }
+                    Thread.currentThread().sleep(MILLIS * 2);
+                    handlerGo.sendEmptyMessage(603);
+
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -2043,16 +1988,10 @@ public class MainActivity extends AppCompatActivity {
             if (NETWORKSTATE == false) {
             } else {
                 try {
+                    Thread.sleep(MILLIS);
+                    handlerGo.sendEmptyMessage(703);
+                    Thread.sleep(MILLIS);
 
-                    for (int i = 0; i < 6; i++) {
-                        Thread.sleep(MILLIS);
-                        handlerGo.sendEmptyMessage(703);
-                        Thread.sleep(MILLIS);
-                        if (RadioContentFlag == true) {
-                            handlerGo.sendEmptyMessage(704);
-                            break;
-                        }
-                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -2175,7 +2114,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static void detectUsbDeviceWithUsbManager() {
-        HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) MainActivity.context.getSystemService(USB_SERVICE)).getDeviceList();
+        HashMap<String, UsbDevice> deviceHashMap = ((UsbManager) MainActivityb.context.getSystemService(USB_SERVICE)).getDeviceList();
 
         for (Map.Entry entry : deviceHashMap.entrySet()) {
             Log.d(TAG, "detectUsbDeviceWithUsbManager: " + entry.getKey() + ", " + entry.getValue());
@@ -2208,15 +2147,12 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化RecycleView内容和dialoglist内容
     private void initList() {
-        if (tl_List.size() < 2) {
-            tl_List.clear();
-            sc_list.clear();
 
-            TestLog tlog1 = new TestLog("", getResources().getString(R.string.testcontent));
-            tl_List.add(tlog1);
+        TestLog tlog1 = new TestLog("", getResources().getString(R.string.testcontent));
+        tl_List.add(tlog1);
 
-            sc_list.add(new ShowContent("", ""));
-        }
+        sc_list.add(new ShowContent("", ""));
+
         int length = mlistText.length;
         for (int i = 0; i < length; i++) {
             Map<String, Object> item = new HashMap<>();
@@ -2270,7 +2206,6 @@ public class MainActivity extends AppCompatActivity {
                 // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
                 if (j != PackageManager.PERMISSION_GRANTED) {
                     // 如果没有授予该权限，就去提示用户请求
-
                     showDialogTipUserRequestPermission(i);
                 }
             }
@@ -2286,8 +2221,8 @@ public class MainActivity extends AppCompatActivity {
         String str_2 = "";
         switch (i) {
             case 0:
-                str_1 = "获取位置权限不可用";
-                str_2 = "由于需要获取位置信息；\n否则，您将无法正常使用";
+                str_1 = "获粗略取位置权限不可用";
+                str_2 = "由于需要获粗略取位置信息；\n否则，您将无法正常使用";
                 break;
             case 1:
                 str_1 = "获取精准位置权限不可用";
@@ -2310,27 +2245,22 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        ActivityCompat.requestPermissions(MainActivity.this, permissions, 321);
 
-
-        //不需自己弹窗
-
-//        new AlertDialog.Builder(this)
-//                .setTitle(str_1)
-//                .setMessage(str_2)
-//                .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        startRequestPermission();
-//
-//                    }
-//                })
-//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                    }
-//                }).setCancelable(false).show();
+        new AlertDialog.Builder(this)
+                .setTitle(str_1)
+                .setMessage(str_2)
+                .setPositiveButton("立即开启", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startRequestPermission();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).setCancelable(false).show();
     }
 
 
@@ -2464,7 +2394,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static boolean isWifiConnect() {
-        ConnectivityManager connManager = (ConnectivityManager) MainActivity.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connManager = (ConnectivityManager) MainActivityb.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return mWifiInfo.isConnected();
     }
@@ -2495,7 +2425,7 @@ public class MainActivity extends AppCompatActivity {
     private static int whichNet() {
 
 
-        int i = getAPNType(MainActivity.context.getApplicationContext());
+        int i = getAPNType(MainActivityb.context.getApplicationContext());
 
         if (ping() && i == 0) {
             i = 10;
@@ -2916,19 +2846,19 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    private boolean isInstall(String packageName) {
+    private boolean isInstall(String packageName){
         PackageManager packageManager = this.getPackageManager();
 
         boolean hasInstallWx;
-        try {
-            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_GIDS);
-            hasInstallWx = packageInfo != null;
-        } catch (PackageManager.NameNotFoundException e) {
-            hasInstallWx = false;
-            e.printStackTrace();
-        }
-        return hasInstallWx;
-    }
+        try{
+            PackageInfo packageInfo =packageManager.getPackageInfo(packageName,PackageManager.GET_GIDS);
+            hasInstallWx = packageInfo !=null;
+        }catch(PackageManager.NameNotFoundException e) {
+            hasInstallWx =false;
+            e.printStackTrace();    }
+            return hasInstallWx;  }
+
+
 
 
     /*
@@ -3035,12 +2965,12 @@ public class MainActivity extends AppCompatActivity {
     public void CreateDialog() {
 
         // 动态加载一个listview的布局文件进来
-        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(MainActivityb.this);
         getlistview = inflater.inflate(R.layout.listview, null);
 
         // 给ListView绑定内容
         ListView listview = (ListView) getlistview.findViewById(R.id.X_listview);
-        adapter = new SetSimpleAdapter(MainActivity.this, mData, R.layout.check, new String[]{"text"},
+        adapter = new SetSimpleAdapter(MainActivityb.this, mData, R.layout.check, new String[]{"text"},
                 new int[]{R.id.X_item_text});
         // 给listview加入适配器
         listview.setAdapter(adapter);
@@ -3136,7 +3066,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static int sdNum() {
 
-        StorageManager sm = (StorageManager) MainActivity.context.getSystemService(Context.STORAGE_SERVICE);
+        StorageManager sm = (StorageManager) MainActivityb.context.getSystemService(Context.STORAGE_SERVICE);
 
         String[] paths;
 
@@ -3280,9 +3210,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        FileUtils.saveFile(tl_List);
-//        FileUtils.saveFile(screenShotWholeScreen(), "testPic.jpeg", MainActivity.this);
-//        Log.e("保存截图到", "//sdcard//UTest//testPic.jpeg");
+        FileUtils.saveFile(tl_List);
+        FileUtils.saveFile(screenShotWholeScreen(), "testPic.jpeg", MainActivityb.this);
+        Log.e("保存截图到", "//sdcard//UTest//testPic.jpeg");
         Log.e("关闭应用", "");
         try {
 

@@ -81,6 +81,7 @@
         android:layout_alignParentTop="true"
         android:scaleType="centerInside"
         android:textSize="18dp"
+        android:focusable="true"
         android:src="@drawable/exit"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
